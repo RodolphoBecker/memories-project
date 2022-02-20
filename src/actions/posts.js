@@ -1,13 +1,22 @@
-export default (posts = [], action) => {
-	switch (action.type) {
-		case "FETCH_ALL":
-			return posts;
-			break;
+import * as api from "../api";
 
-		case "CREATE":
-			return posts;
+export const getPosts = () => async (dispatch) => {
+	// const action = { type: 'FETCH_ALL', payload: [] }
+	try {
+		const { data } = await api.fetchPosts();
 
-		default:
-			return posts;
+		dispatch({ type: "FETCH_ALL", payload: data });
+	} catch (error) {
+		console.log(error.message);
+	}
+};
+
+export const createPost = (post) => async (dispatch) => {
+	try {
+		const { data } = await api.createPost(post);
+
+		dispatch({ type: "CREATE", payload: data });
+	} catch (error) {
+		console.log(error.message);
 	}
 };
